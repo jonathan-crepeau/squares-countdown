@@ -1,11 +1,10 @@
 // console.log('Fear is the mind killer.');
 
 $('.start-btn').on('click', () => {
-    gameObject.createSquares(20);
+    gameObject.playGame();
     $('.game-square').on('click', gameObject.handleClick);
+    $('.start-btn').detach();
 });
-
-
 
 const gameObject = {
     time: 10,
@@ -15,9 +14,8 @@ const gameObject = {
         if (gameObject.rounds >= 4) {
             return alert('Game over!');
         } else {
-            console.log(gameObject.rounds);
-            gameObject.rounds++
-            this.playGame()
+            gameObject.setRound();
+            gameObject.setTimer();
         }
     },
     createSquares(numberOfSquares) {
@@ -57,4 +55,32 @@ const gameObject = {
             $('.scoreboard').html('scoreboard ' + gameObject.score)
         }
     },
+    setRound() {
+        $('.squares-container').empty();
+        $('.round').html('round ' + gameObject.rounds);
+
+        if (gameObject.rounds === 1) {
+            this.createSquares(20);
+            gameObject.time = 30;
+        } else if (gameObject.rounds === 2) {
+            this.createSquares(50);
+            gameObject.time = 20;
+        } else {
+            this.createSquares(100);
+            gameObject.time = 10;
+        }
+        $('.time').html('time: ' + gameObject.time + 's');
+    },
+    setTimer() {
+        const timer = setInterval(() => {
+            if (gameObject.time === 0) {
+                clearInterval(timer);
+                gameObject.rounds++;
+                gameObject.playGame();
+            }
+            console.log(gameObject.time);
+            $('.time').html('time: ' + gameObject.time + 's');
+            gameObject.time--;
+        }, 200)
+    }
 }
