@@ -3,7 +3,6 @@
 $('.start-btn').on('click', () => {
     gameObject.playGame();
     $('.game-square').on('click', gameObject.handleClick);
-    $('.start-btn').detach();
 });
 
 const gameObject = {
@@ -49,24 +48,21 @@ const gameObject = {
     updateScore(input) {
         if (input === 'win') {
             gameObject.score++;
-            $('.scoreboard').html('scoreboard ' + gameObject.score)
+            $('.scoreboard').html('scoreboard: ' + gameObject.score)
         } else {
             gameObject.score--;
-            $('.scoreboard').html('scoreboard ' + gameObject.score)
+            $('.scoreboard').html('scoreboard: ' + gameObject.score)
         }
     },
     setRound() {
-        $('.squares-container').empty();
-        $('.round').html('round ' + gameObject.rounds);
-
         if (gameObject.rounds === 1) {
-            this.createSquares(20);
+            this.createSquares(100);
             gameObject.time = 30;
         } else if (gameObject.rounds === 2) {
-            this.createSquares(50);
+            this.createSquares(150);
             gameObject.time = 20;
         } else {
-            this.createSquares(100);
+            this.createSquares(200);
             gameObject.time = 10;
         }
         $('.time').html('time: ' + gameObject.time + 's');
@@ -76,11 +72,12 @@ const gameObject = {
             if (gameObject.time === 0) {
                 clearInterval(timer);
                 gameObject.rounds++;
-                gameObject.playGame();
+                $('.squares-container').empty();
+                $('.round').html('round ' + gameObject.rounds);
             }
             console.log(gameObject.time);
             $('.time').html('time: ' + gameObject.time + 's');
             gameObject.time--;
-        }, 200)
+        }, 1000)
     }
 }
